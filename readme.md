@@ -1,6 +1,6 @@
-# Glowing Pumpkin Server (UDP)
+# Glowing Pumpkin Server Sync (UDP)
 
-This is the [Glowing Pumpkin Xiao 5x5 BFF](https://github.com/johnwargo/glowing-pumpkin-xiao-bff) project with a UDP broadcast listener added to you can control the app from a smartphone, tablet, of desktop PC. 
+This is the [Glowing Pumpkin Xiao 5x5 BFF](https://github.com/johnwargo/glowing-pumpkin-xiao-bff) project with UDP broadcast sender and listener components included. The sender broadcast messages to listener devices on the network to control them (synchronize activities between them).
 
 Documentation forthcoming.
 
