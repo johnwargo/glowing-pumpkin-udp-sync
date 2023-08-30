@@ -2,39 +2,37 @@
 * Glowing Pumpkin 
 * 
 * Xaio ESP32 S3 version using the Adafruit 5x5 BFF LED
-* Matrix.  This edition adds a web server and web app
-* to the project so you can control it from a smartphone
-* or other external device.
+* Matrix.  This edition adds a UDP sender/receiver to the 
+* project. The sender sends commands to multiple receivers
+* using UDP broadcasts.
 *
 * By John M. Wargo
 * https://johnwargo.com
 **********************************************************/
 
-// https://randomnerdtutorials.com/esp32-dual-core-arduino-ide/
-
 #include <FastLED.h>
 #include <WiFi.h>
 #include <WiFiUdp.h>
+
 // local file (contains Wi-Fi credentials)
 #include "constants.h"
 
 #define DEBUG
-// if you change the UDP Broadcast Prefix in the Flutter app
-// you must change the following value to match.
-#define BROADCAST_PREFIX "pumpkin"
 #define NUM_LEDS 25
 #define PIN A3
 
 // store the credentials in the project's constants.h file
 const char* ssid = WIFI_SSID;
 const char* password = WIFI_PASSWORD;
+// if you change the UDP Broadcast Prefix in the sender
+// you must change the following value to match.
+const String broadcastPrefix = "pumpkin";
 
 // LED Matrix stuff
-int numColors = 6;
 uint32_t colors[] = { CRGB::Blue, CRGB::Green, CRGB::Orange, CRGB::Purple, CRGB::Red, CRGB::Yellow };
 CRGB leds[NUM_LEDS];  // LED Array (internal memory structure from FastLED)
 
-WiFiUDP Udp;
+WiFiUDP udp;
 String request, searchStr;
 int color, colorPos, count;
 unsigned int localPort = 65001;       // local port to listen on
@@ -65,7 +63,8 @@ void setup() {
   Serial.print("Connecting to ");
   Serial.println(ssid);
   setColor(CRGB::Blue);  // turn all LEDs blue while we connect to the Wi-Fi network
-                         // tracks how many times we've looped to connect to Wi-Fi
+
+  // tracks how many times we've looped to connect to Wi-Fi
   // helps the sketch format the output a little cleaner
   int counter = 0;
 
@@ -88,51 +87,52 @@ void setup() {
   flashLEDs(CRGB::Green, 2);
 
   // start the UDP listener
-  Udp.begin(localPort);
+  udp.begin(localPort);
 }
 
 void loop() {
   // if there's UDP data available, read a packet
-  int packetSize = Udp.parsePacket();
+  int packetSize = udp.parsePacket();
   if (packetSize) {
-    IPAddress remoteIp = Udp.remoteIP();
+    IPAddress remoteIp = udp.remoteIP();
 #ifdef DEBUG
     Serial.print("Received packet of size ");
     Serial.println(packetSize);
     Serial.print("From ");
     Serial.print(remoteIp);
     Serial.print(", port ");
-    Serial.println(Udp.remotePort());
+    Serial.println(udp.remotePort());
 #endif
     // read the packet into packetBufffer
-    int len = Udp.read(packetBuffer, 255);
+    int len = udp.read(packetBuffer, 255);
     if (len > 0) {
       packetBuffer[len] = 0;
     }
 
     // send a reply, to the IP address and port that sent us the packet we received
-    Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+    udp.beginPacket(udp.remoteIP(), udp.remotePort());
     // https://forum.arduino.cc/t/solved-invalid-conversion-from-char-to-uint8_t/563582/2
     int i = 0;
     while (ReplyBuffer[i] != 0)
-      Udp.write((uint8_t)ReplyBuffer[i++]);
-    Udp.endPacket();
+      udp.write((uint8_t)ReplyBuffer[i++]);
+    udp.endPacket();
 
     request = packetBuffer;
     Serial.print("Request: ");
     Serial.println(request);
 
-    searchStr = "pumpkin::color:";
+    searchStr = broadcastPrefix + "::color:";
     colorPos = searchStr.length();
     if (request.indexOf(searchStr) >= 0) {
       color = request.charAt(colorPos) - '0';
       Serial.print("Set Color #");
       Serial.println(color);
       fadeColor(colors[color]);
-      return; // skip the rest of this loop
+      return;  // skip the rest of this loop
     }
 
-    if (request.indexOf("pumpkin::lightning") >= 0) {
+    searchStr = broadcastPrefix + "::lightning";
+    if (request.indexOf(searchStr) >= 0) {
       flicker();
     }
   }
