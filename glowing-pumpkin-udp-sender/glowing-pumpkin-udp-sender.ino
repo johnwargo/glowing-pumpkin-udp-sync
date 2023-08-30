@@ -2,9 +2,9 @@
 * Glowing Pumpkin 
 * 
 * Xaio ESP32 S3 version using the Adafruit 5x5 BFF LED
-* Matrix.  This edition adds a web server and web app
-* to the project so you can control it from a smartphone
-* or other external device.
+* Matrix.  This edition adds a UDP sender/receiver to the 
+* project. The sender sends commands to multiple receivers
+* using UDP broadcasts.
 *
 * By John M. Wargo
 * https://johnwargo.com
