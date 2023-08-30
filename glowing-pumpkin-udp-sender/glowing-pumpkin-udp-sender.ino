@@ -91,7 +91,9 @@ void loop() {
   // determine what to do next
 
   // tell all the other devices
-
+  udp.beginPacket(udpAddress, udpPort);
+  udp.printf("Seconds since boot: %lu", millis() / 1000);
+  udp.endPacket();
   // then do it here
 }
 
