@@ -129,6 +129,7 @@ void loop() {
       Serial.print("Set Color #");
       Serial.println(color);
       fadeColor(colors[color]);
+      return; // skip the rest of this loop
     }
 
     if (request.indexOf("pumpkin::lightning") >= 0) {
