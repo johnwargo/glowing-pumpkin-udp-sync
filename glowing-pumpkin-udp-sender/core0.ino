@@ -5,8 +5,6 @@
 * ESP32. The code handles UDP broadcast messages
 **********************************************************/
 
-#include <WiFiUdp.h>
-
 // Commands:
 // color:# -> disable random colors and set the LED matrix to the selected color
 // flash:#x:#y -> disable random colors, flash the lights using the selected color (#x) #y times, enable random colors

@@ -14,12 +14,12 @@
 
 #include <FastLED.h>
 #include <WiFi.h>
-#include <ESPmDNS.h>
-
+#include <WiFiUdp.h>
+// local file (contains Wi-Fi credentials)
 #include "constants.h"
 
 #define DEBUG
-// if you change the UDP Broadcast Prefix in the Flutter app
+// if you change the UDP Broadcast Prefix in the receiver sketch
 // you must change the following value to match.
 #define HOSTNAME "pumpkin"
 #define NUM_LEDS 25
@@ -29,16 +29,16 @@
 const char* ssid = WIFI_SSID;
 const char* password = WIFI_PASSWORD;
 
-TaskHandle_t Task0;
-TaskHandle_t Task1;
-
-// Controls whether random color display is enabled or not.
-bool doRandom = false;
-
 // LED Matrix stuff
 int numColors = 6;
 uint32_t colors[] = { CRGB::Blue, CRGB::Green, CRGB::Orange, CRGB::Purple, CRGB::Red, CRGB::Yellow };
 CRGB leds[NUM_LEDS];  // LED Array (internal memory structure from FastLED)
+
+WiFiUDP Udp;
+String request, searchStr;
+int color, colorPos, count;
+unsigned int localPort = 65001;  // local port to listen on
+char packetBuffer[255];          //buffer to hold incoming packet
 
 void setup() {
 
@@ -82,28 +82,68 @@ void setup() {
   Serial.println("WiFi connected");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-
-  if (MDNS.begin(HOSTNAME)) {
-    Serial.println("MDNS responder started");
-    MDNS.addService("http", "tcp", 80);
-  } else {
-    Serial.println("Error setting up MDNS responder!");
-    fadeColor(CRGB::Red);
-    while (1) {
-      delay(1000);
-    }
-  }
-
   // Flash LEDs green to let everyone know we successfully
   // connected to Wi-Fi
   flashLEDs(CRGB::Green, 2);
-
-  //create a task that executes the Task0code() function, with priority 1 and executed on core 0
-  xTaskCreatePinnedToCore(Task0code, "Task0", 10000, NULL, 1, &Task0, 0);
-  //create a task that executes the Task0code() function, with priority 1 and executed on core 1
-  xTaskCreatePinnedToCore(Task1code, "Task1", 10000, NULL, 1, &Task1, 1);
 }
 
 void loop() {
-  // nothing to do here, everything happens in the Tast1Code and Task2Code functions
+  // determine what to do next
+
+  // tell all the other devices
+
+  // then do it here
+}
+
+// Fill the NeoPixel array with a specific color
+void fadeColor(CRGB c) {
+  // Serial.println("Changing color");
+  for (int i = 0; i < 25; i++) {
+    leds[i] = c;
+    FastLED.show();
+    delay(10);
+  }
+  delay((int)random(250, 2000));
+}
+
+void flashLEDs(CRGB color, int count) {
+  int duration = 500;
+  int offDuration = duration / 2;
+
+  for (int i = 0; i < count; i++) {
+    fill_solid(leds, NUM_LEDS, color);
+    FastLED.show();
+    delay(duration);
+    fill_solid(leds, NUM_LEDS, CRGB::Black);
+    FastLED.show();
+    delay(offDuration);
+  }
+  delay(500);
+}
+
+void flicker() {
+  // how many times are we going to flash?
+  int flashCount = (int)random(2, 6);
+  Serial.print("Flickering LEDs ");
+  Serial.print(flashCount);
+  Serial.println(" times");
+  //flash the lights in white flashCount times
+  //with a random duration and random delay between each flash
+  for (int i = 0; i < flashCount; i++) {
+    // Set all pixels to white and turn them on
+    fill_solid(leds, NUM_LEDS, CRGB::White);
+    FastLED.show();
+    // Delay for a random period of time (in milliseconds)
+    delay((int)random(50, 150));
+    //clear the lights (set the color to none)
+    fill_solid(leds, NUM_LEDS, CRGB::Black);
+    FastLED.show();
+    // Delay for a random period of time (in milliseconds)
+    delay((int)random(100, 500));
+  }
+}
+
+void setColor(CRGB c) {
+  fill_solid(leds, NUM_LEDS, c);
+  FastLED.show();
 }
