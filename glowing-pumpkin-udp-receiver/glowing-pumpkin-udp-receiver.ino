@@ -107,13 +107,13 @@ void loop() {
       packetBuffer[len] = 0;
     }
 
-    // send a reply, to the IP address and port that sent us the packet we received
-    udp.beginPacket(udp.remoteIP(), udp.remotePort());
-    // https://forum.arduino.cc/t/solved-invalid-conversion-from-char-to-uint8_t/563582/2
-    int i = 0;
-    while (ReplyBuffer[i] != 0)
-      udp.write((uint8_t)ReplyBuffer[i++]);
-    udp.endPacket();
+    // // send a reply, to the IP address and port that sent us the packet we received
+    // udp.beginPacket(udp.remoteIP(), udp.remotePort());
+    // // https://forum.arduino.cc/t/solved-invalid-conversion-from-char-to-uint8_t/563582/2
+    // int i = 0;
+    // while (ReplyBuffer[i] != 0)
+    //   udp.write((uint8_t)ReplyBuffer[i++]);
+    // udp.endPacket();
 
     request = packetBuffer;
     Serial.print("Request: ");
