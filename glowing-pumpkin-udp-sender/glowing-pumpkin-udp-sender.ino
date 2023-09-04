@@ -75,6 +75,7 @@ void setup() {
   // helps the sketch format the output a little cleaner
   int counter = 0;
 
+  WiFi.disconnect(true);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
