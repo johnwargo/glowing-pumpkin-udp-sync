@@ -17,7 +17,6 @@
 // local file (contains Wi-Fi credentials)
 #include "constants.h"
 
-#define DEBUG
 #define NUM_LEDS 25
 #define PIN A3
 
@@ -35,7 +34,7 @@ CRGB leds[NUM_LEDS];  // LED Array (internal memory structure from FastLED)
 WiFiUDP udp;
 String request, searchStr;
 int color, colorPos, count;
-unsigned int localPort = 3333;       // local port to listen on
+unsigned int localPort = 3333;        // local port to listen on
 char packetBuffer[255];               //buffer to hold incoming packet
 char ReplyBuffer[] = "acknowledged";  // a string to send back
 
@@ -87,6 +86,7 @@ void setup() {
   flashLEDs(CRGB::Green, 2);
 
   // start the UDP listener
+  Serial.println("Starting UDP listener");
   udp.begin(localPort);
 }
 
@@ -95,14 +95,12 @@ void loop() {
   int packetSize = udp.parsePacket();
   if (packetSize) {
     IPAddress remoteIp = udp.remoteIP();
-#ifdef DEBUG
     Serial.print("Received packet of size ");
     Serial.println(packetSize);
     Serial.print("From ");
     Serial.print(remoteIp);
     Serial.print(", port ");
     Serial.println(udp.remotePort());
-#endif
     // read the packet into packetBufffer
     int len = udp.read(packetBuffer, 255);
     if (len > 0) {
