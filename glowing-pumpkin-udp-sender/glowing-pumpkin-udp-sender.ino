@@ -94,6 +94,9 @@ void setup() {
   // Flash LEDs green to let everyone know we successfully
   // connected to Wi-Fi
   flashLEDs(CRGB::Green, 2);
+
+  // Start the UDP server
+  udp.beginMulticast(IPAddress(192,168,86,255), udpPort);
 }
 
 void loop() {
@@ -178,7 +181,7 @@ void sendBroadcast(String msg) {
   strLen = msg.length() + 1;
   msg.toCharArray(charArray, strLen);
 
-  udp.beginMulticast(IPAddress(192,168,86,255), udpPort);
+  udp.beginMulticastPacket();
   // udp.beginPacket(udpAddress, udpPort);
   udp.printf(charArray);
   udp.endPacket();
