@@ -119,6 +119,7 @@ void loop() {
     Serial.print("Request: ");
     Serial.println(request);
 
+    // Color
     searchStr = broadcastPrefix + "c:";
     colorPos = searchStr.length();
     if (request.indexOf(searchStr) >= 0) {
@@ -129,6 +130,7 @@ void loop() {
       return;  // skip the rest of this loop
     }
 
+    // Flicker
     searchStr = broadcastPrefix + "f";
     if (request.indexOf(searchStr) >= 0) {
       flicker();
