@@ -29,7 +29,7 @@ const char* password = WIFI_PASSWORD;
 // if you change the UDP Broadcast Prefix in the receiver sketch
 // you must change the following value to match.
 const String broadcastPrefix = "pumpkin";
-const int udpPort = 65000;
+const int udpPort = 3333;
 
 // LED Matrix stuff
 int numColors = 6;
