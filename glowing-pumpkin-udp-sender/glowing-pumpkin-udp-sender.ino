@@ -31,9 +31,10 @@ const char* password = WIFI_PASSWORD;
 const String broadcastPrefix = "pmpkn::";
 // https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFi/examples/WiFiUDPClient/WiFiUDPClient.ino
 // multicast
+const char * udpAddress = "192.168.86.255";
 // const char * udpAddress = "0.0.0.0";
 // specific address
-const char* udpAddress = "192.168.86.36";
+// const char* udpAddress = "192.168.86.36";
 const int udpPort = 3333;
 
 // LED Matrix stuff
@@ -177,8 +178,8 @@ void sendBroadcast(String msg) {
   strLen = msg.length() + 1;
   msg.toCharArray(charArray, strLen);
 
-  // udp.beginMulticast(udpAddress, udpPort);
-  udp.beginPacket(udpAddress, udpPort);
+  udp.beginMulticast(IPAddress(192,168,86,255), udpPort);
+  // udp.beginPacket(udpAddress, udpPort);
   udp.printf(charArray);
   udp.endPacket();
 }
