@@ -52,7 +52,7 @@ void setup() {
   // Check to make sure we have Wi-Fi credentials
   // before trying to use them
   if (String(ssid).isEmpty() || String(password).isEmpty()) {
-    Serial.println("Missing Wi-Fi credentials");
+    Serial.println("\nMissing Wi-Fi credentials");
     setColor(CRGB::Red);
     for (;;) {}
   }
@@ -62,7 +62,7 @@ void setup() {
   delay(500);
 
   // connect to the Wi-Fi network
-  Serial.print("Connecting to ");
+  Serial.print("\nConnecting to ");
   Serial.println(ssid);
   setColor(CRGB::Blue);  // turn all LEDs blue while we connect to the Wi-Fi network
 
@@ -168,7 +168,7 @@ void sendBroadcast(String msg) {
 
   // 0.0.0.0 means any IP address
   // udp.beginMulticast(IPAddress(0, 0, 0, 0), udpPort);
-    udp.beginMulticast(IPAddress(192, 168, 86, 36), udpPort);
+  udp.beginMulticast(IPAddress(192, 168, 86, 36), udpPort);
   udp.printf(charArray);
   udp.endPacket();
 }
