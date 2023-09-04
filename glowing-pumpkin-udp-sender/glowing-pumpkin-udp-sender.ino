@@ -167,7 +167,8 @@ void sendBroadcast(String msg) {
   msg.toCharArray(charArray, strLen);
 
   // 0.0.0.0 means any IP address
-  udp.beginMulticast(IPAddress(0, 0, 0, 0), udpPort);
+  // udp.beginMulticast(IPAddress(0, 0, 0, 0), udpPort);
+    udp.beginMulticast(IPAddress(192, 168, 86, 36), udpPort);
   udp.printf(charArray);
   udp.endPacket();
 }
