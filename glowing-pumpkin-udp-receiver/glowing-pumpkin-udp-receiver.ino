@@ -25,7 +25,7 @@ const char* ssid = WIFI_SSID;
 const char* password = WIFI_PASSWORD;
 // if you change the UDP Broadcast Prefix in the sender
 // you must change the following value to match.
-const String broadcastPrefix = "pumpkin";
+const String broadcastPrefix = "pmpkn::";
 
 // LED Matrix stuff
 uint32_t colors[] = { CRGB::Blue, CRGB::Green, CRGB::Orange, CRGB::Purple, CRGB::Red, CRGB::Yellow };

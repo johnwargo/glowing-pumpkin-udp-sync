@@ -28,7 +28,12 @@ const char* ssid = WIFI_SSID;
 const char* password = WIFI_PASSWORD;
 // if you change the UDP Broadcast Prefix in the receiver sketch
 // you must change the following value to match.
-const String broadcastPrefix = "pumpkin";
+const String broadcastPrefix = "pmpkn::";
+// https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFi/examples/WiFiUDPClient/WiFiUDPClient.ino
+// multicast
+// const char * udpAddress = "0.0.0.0";
+// specific address
+const char* udpAddress = "192.168.86.36";
 const int udpPort = 3333;
 
 // LED Matrix stuff
@@ -96,13 +101,13 @@ void loop() {
   //generate a random integer between 1 and 10
   if ((int)random(11) > 8) {
     // if it's a 9 or a 10, do that flicker thing
-    cmdStr = broadcastPrefix + "::flicker";
+    cmdStr = broadcastPrefix + "f";
     sendBroadcast(cmdStr);
     flicker();
   } else {
     // Otherwise switch to the new color
     colorIdx = random(1, numColors + 1);
-    cmdStr = broadcastPrefix + "::color:" + String(colorIdx);
+    cmdStr = broadcastPrefix + "c:" + String(colorIdx);
     sendBroadcast(cmdStr);
     fadeColor(colors[colorIdx]);
   }
@@ -159,16 +164,20 @@ void setColor(CRGB c) {
 }
 
 void sendBroadcast(String msg) {
-  Serial.println(msg);
+// "pmpkn::c:#"
+#define cmdLen 10
+  int strLen;
+  char charArray[cmdLen + 1];
 
-  // copy the message to a Character array
-  int strLen = msg.length() + 1;
-  char charArray[strLen];
+  Serial.println(msg);
+  // fill the char array with zeros (clear out any previous command detritus)
+  for (int i = 0; i < cmdLen; i++) charArray[i] = ' ';
+  // copy the message (String) to the Character array
+  strLen = msg.length() + 1;
   msg.toCharArray(charArray, strLen);
 
-  // 0.0.0.0 means any IP address
-  // udp.beginMulticast(IPAddress(0, 0, 0, 0), udpPort);
-  udp.beginMulticast(IPAddress(192, 168, 86, 36), udpPort);
+  // udp.beginMulticast(udpAddress, udpPort);
+  udp.beginPacket(udpAddress, udpPort);
   udp.printf(charArray);
   udp.endPacket();
 }
