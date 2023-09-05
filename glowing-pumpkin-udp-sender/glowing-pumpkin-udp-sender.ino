@@ -9,9 +9,6 @@
 * By John M. Wargo
 * https://johnwargo.com
 **********************************************************/
-
-// https://randomnerdtutorials.com/esp32-dual-core-arduino-ide/
-
 #include <FastLED.h>
 #include <WiFi.h>
 #include <WiFiUdp.h>
@@ -19,7 +16,6 @@
 // local file (contains Wi-Fi credentials)
 #include "constants.h"
 
-#define DEBUG
 #define NUM_LEDS 25
 #define PIN A3
 
@@ -28,14 +24,12 @@ const char* ssid = WIFI_SSID;
 const char* password = WIFI_PASSWORD;
 // if you change the UDP Broadcast Prefix in the receiver sketch
 // you must change the following value to match.
-const String broadcastPrefix = "pmpkn::";
 // https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFi/examples/WiFiUDPClient/WiFiUDPClient.ino
 // multicast
 const char* udpAddress = "192.168.86.255";
-// const char * udpAddress = "0.0.0.0";
 // specific address
 // const char* udpAddress = "192.168.86.36";
-const int udpPort = 3333;
+const uint16_t udpPort = 3333;
 
 // LED Matrix stuff
 int numColors = 6;
@@ -43,9 +37,7 @@ uint32_t colors[] = { CRGB::Blue, CRGB::Green, CRGB::Orange, CRGB::Purple, CRGB:
 CRGB leds[NUM_LEDS];  // LED Array (internal memory structure from FastLED)
 
 WiFiUDP udp;
-
-String searchStr;
-char packetBuffer[255];  //buffer to hold incoming packet
+String broadcastPrefix = "pmpkn::";
 
 void setup() {
   Serial.begin(115200);
@@ -55,31 +47,33 @@ void setup() {
   // Initialize the FastLED library
   FastLED.addLeds<NEOPIXEL, PIN>(leds, NUM_LEDS);
 
-  // Check to make sure we have Wi-Fi credentials
-  // before trying to use them
+  Serial.println("\nGlowing Pumpkin UDP Sender");
+
+  // Check to make sure we have Wi-Fi credentials before trying to use them
   if (String(ssid).isEmpty() || String(password).isEmpty()) {
     Serial.println("\nMissing Wi-Fi credentials");
     setColor(CRGB::Red);
     for (;;) {}
   }
 
-  // flash to let everyone know we're up
-  flashLEDs(CRGB::Green, 2);  // Flash the lights twice to let everyone know we've initiated
+  // flash to let everyone know we're up and running
+  flashLEDs(CRGB::Green, 2); 
   delay(500);
 
   // connect to the Wi-Fi network
-  Serial.print("\nConnecting to ");
+  Serial.print("Connecting to ");
   Serial.println(ssid);
-  setColor(CRGB::Blue);  // turn all LEDs blue while we connect to the Wi-Fi network
+  // turn all LEDs blue while we connect to the Wi-Fi network
+  setColor(CRGB::Blue);  
 
   // tracks how many times we've looped to connect to Wi-Fi
   // helps the sketch format the output a little cleaner
   int counter = 0;
 
-  WiFi.disconnect(true);
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+    delay(200);
     Serial.print(".");
     counter += 1;
     if (counter > 25) {
@@ -87,12 +81,12 @@ void setup() {
       Serial.println();
     }
   }
-  Serial.println();
-  Serial.println("WiFi connected");
+
+  Serial.println("");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-  // Flash LEDs green to let everyone know we successfully
-  // connected to Wi-Fi
+  
+  // Flash LEDs green to let everyone know we successfully connected to Wi-Fi
   flashLEDs(CRGB::Green, 2);
 
   // Start the UDP server
@@ -103,16 +97,18 @@ void loop() {
   String cmdStr;
   int colorIdx;
 
+  cmdStr = broadcastPrefix;
   //generate a random integer between 1 and 10
   if ((int)random(11) > 8) {
     // if it's a 9 or a 10, do that flicker thing
-    cmdStr = broadcastPrefix + "f";
+    cmdStr += "f";
     sendBroadcast(cmdStr);
     flicker();
   } else {
     // Otherwise switch to the new color
     colorIdx = random(1, numColors + 1);
-    cmdStr = broadcastPrefix + "c:" + String(colorIdx);
+    cmdStr += "c:";
+    cmdStr += String(colorIdx);
     sendBroadcast(cmdStr);
     fadeColor(colors[colorIdx]);
   }
@@ -169,23 +165,26 @@ void setColor(CRGB c) {
 }
 
 void sendBroadcast(String msg) {
-// "pmpkn::c:#"
-#define cmdLen 10
-  int strLen;
-  char charArray[cmdLen + 1];
+  // command (cmd): pmpkn::c:#
+  int cmdLen = 12;  // a little longer than the command string
+  unsigned int strLen;
+  char charArray[cmdLen];
 
   Serial.println(msg);
+  Serial.println("-1");
+  strLen = msg.length();
+  Serial.println("0");
   // fill the char array with zeros (clear out any previous command detritus)
   for (int i = 0; i < cmdLen; i++) charArray[i] = ' ';
   Serial.println("1");
   // copy the message (String) to the Character array
-  strLen = msg.length() + 1;
-  Serial.println(strLen);
-  msg.toCharArray(charArray, strLen);
+  msg.toCharArray(charArray, strLen + 1);
   Serial.println("3");
   udp.beginMulticastPacket();
   Serial.println("4");
   // udp.beginPacket(udpAddress, udpPort);
   udp.printf(charArray);
+  Serial.println("5");
   udp.endPacket();
+  Serial.println("6");
 }
