@@ -57,14 +57,14 @@ void setup() {
   }
 
   // flash to let everyone know we're up and running
-  flashLEDs(CRGB::Green, 2); 
+  flashLEDs(CRGB::Green, 2);
   delay(500);
 
   // connect to the Wi-Fi network
   Serial.print("Connecting to ");
   Serial.println(ssid);
   // turn all LEDs blue while we connect to the Wi-Fi network
-  setColor(CRGB::Blue);  
+  setColor(CRGB::Blue);
 
   // tracks how many times we've looped to connect to Wi-Fi
   // helps the sketch format the output a little cleaner
@@ -85,7 +85,7 @@ void setup() {
   Serial.println("");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-  
+
   // Flash LEDs green to let everyone know we successfully connected to Wi-Fi
   flashLEDs(CRGB::Green, 2);
 
@@ -166,25 +166,27 @@ void setColor(CRGB c) {
 
 void sendBroadcast(String msg) {
   // command (cmd): pmpkn::c:#
-  int cmdLen = 12;  // a little longer than the command string
+  int cmdLen = 11;  // a little longer than the command string (+1)
   unsigned int strLen;
   char charArray[cmdLen];
 
-  Serial.println(msg);
-  Serial.println("-1");
-  strLen = msg.length();
   Serial.println("0");
+  Serial.println(msg);
+  Serial.println("1");
+  delay(500);
+  strLen = msg.length();
+  Serial.println("2");
   // fill the char array with zeros (clear out any previous command detritus)
   for (int i = 0; i < cmdLen; i++) charArray[i] = ' ';
-  Serial.println("1");
-  // copy the message (String) to the Character array
-  msg.toCharArray(charArray, strLen + 1);
   Serial.println("3");
-  udp.beginMulticastPacket();
+  // copy the message (String) to the Character array
+  msg.toCharArray(charArray, strLen);
   Serial.println("4");
+  udp.beginMulticastPacket();
+  Serial.println("5");
   // udp.beginPacket(udpAddress, udpPort);
   udp.printf(charArray);
-  Serial.println("5");
-  udp.endPacket();
   Serial.println("6");
+  udp.endPacket();
+  Serial.println("7");
 }
