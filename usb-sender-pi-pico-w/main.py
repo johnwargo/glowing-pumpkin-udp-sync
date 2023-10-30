@@ -11,7 +11,6 @@
 # external libraries
 import time
 import random
-
 import network
 import socket
 
@@ -30,12 +29,14 @@ delay_min = 5000
 delay_max = 10000
 
 broadcast_prefix = "pmpkn::"
+host_name = "pumpkin-send"
 
 # TODO: Ensure that the UDP settings aren't empty
 # TODO: Ensure that the Wi-Fi network credentials aren't empty
 
 # connect to the wi-fi network
 wlan = network.WLAN(network.STA_IF)
+wlan.config(hostname=host_name)
 wlan.active(True)
 wlan.connect(wifi_ssid, wifi_password)
 
@@ -60,11 +61,12 @@ print("UDP target port :", UDP_PORT)
 random.seed(a=None, version=2)
 
 while True:
+    print("loop")
     try:
-        message = "Hello World"
+        msg = broadcast_prefix
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.sendto(message, (UDP_IP, UDP_PORT))
+        sock.sendto(msg, (UDP_IP, UDP_PORT))
         sock.close()
         print("message sent")
     except:
