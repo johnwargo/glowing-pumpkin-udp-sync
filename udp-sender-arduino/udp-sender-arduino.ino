@@ -29,7 +29,7 @@ const char* password = WIFI_PASSWORD;
 const char* udpAddress = "192.168.86.255";
 // specific address
 // const char* udpAddress = "192.168.86.36";
-const uint16_t udpPort = 3333;
+const uint16_t udpPort = 5005;
 
 // LED Matrix stuff
 int numColors = 6;

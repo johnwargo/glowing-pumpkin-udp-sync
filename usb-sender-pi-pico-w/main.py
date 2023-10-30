@@ -4,9 +4,14 @@
 #
 # UDP Sync Module (for Raspberry Pi Pico W)
 # ===================================================
+# References:
+# https://forums.raspberrypi.com/viewtopic.php?t=258448
+# https://forums.raspberrypi.com/viewtopic.php?t=345398
 
 # external libraries
 import time
+import random
+
 import network
 import socket
 
@@ -20,6 +25,12 @@ UDP_PORT = config.UDP_PORT
 wifi_ssid = config.wifi_ssid
 wifi_password = config.wifi_password
 
+# min and max delay between color change (in milliseconds)
+delay_min = 5000
+delay_max = 10000
+
+broadcast_prefix = "pmpkn::"
+
 # TODO: Ensure that the UDP settings aren't empty
 # TODO: Ensure that the Wi-Fi network credentials aren't empty
 
@@ -30,59 +41,34 @@ wlan.connect(wifi_ssid, wifi_password)
 
 # Wait for connect or fail
 max_wait = 10
-
 while max_wait > 0:
     if wlan.status() < 0 or wlan.status() >= 3:
         break
     max_wait -= 1
-    print('waiting for connection...')
+    print('Waiting for Wi-Fi connection...')
     time.sleep(1)
-
-
-
-MESSAGE  = "Hello, World!"
-
-print("UDP target IP   :", UDP_IP)
-print("UDP target port :", UDP_PORT)
-print("Message         :", MESSAGE)
-
-sock = socket.socket( socket.AF_INET, socket.SOCK_DGRAM )
-sock.sendto( MESSAGE, (UDP_IP, UDP_PORT) )
-sock.close()
-
-
-
-
-# ============================================
-UDP_IP = "192.168.1.93"
-UDP_PORT = 5001
-
-
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-# Wait for connect or fail
-max_wait = 10
-
-while max_wait > 0:
-    if wlan.status() < 0 or wlan.status() >= 3:
-        break
-    max_wait -= 1
-    print('waiting for connection...')
-    time.sleep(1)
-
 # Handle connection error
 if wlan.status() != 3:
-    raise RuntimeError('network connection failed')
+    raise RuntimeError('Wi-Fi connection failed')
 else:
     status = wlan.ifconfig()
     print('Connected to ' + wifi_ssid + '. ' + 'Device IP: ' + status[0])
 
-while True:
-    time.sleep(2)
+print("UDP target IP   :", UDP_IP)
+print("UDP target port :", UDP_PORT)
 
+random.seed(a=None, version=2)
+
+while True:
     try:
         message = "Hello World"
-        sock.sendto(message.encode(), (UDP_IP, UDP_PORT))
+
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.sendto(message, (UDP_IP, UDP_PORT))
+        sock.close()
         print("message sent")
     except:
         print("Network issue")
+
+    # Sleep a random time between delay_min and delay_max
+    time.sleep(random.randint(delay_min, delay_max))
