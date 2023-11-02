@@ -8,6 +8,9 @@
 # https://forums.raspberrypi.com/viewtopic.php?t=258448
 # https://forums.raspberrypi.com/viewtopic.php?t=345398
 
+# TODO: Ensure that the UDP settings aren't empty
+# TODO: Ensure that the Wi-Fi network credentials aren't empty
+
 # external libraries
 import time
 import random
@@ -39,7 +42,6 @@ wifi_password = config.wifi_password
 # =========================================================
 # Start here!
 # =========================================================
-
 print(bars)
 print("* UDP Sender Pi Pico")
 print(bars)
@@ -48,9 +50,6 @@ print("UDP target IP: {}".format(UDP_IP))
 print("UDP target port: {}".format(UDP_PORT))
 print("Wi-FI SSID: {}".format(wifi_ssid))
 print()
-
-# TODO: Ensure that the UDP settings aren't empty
-# TODO: Ensure that the Wi-Fi network credentials aren't empty
 
 # connect to the wi-fi network
 print("Connecting to {}".format(wifi_ssid))
