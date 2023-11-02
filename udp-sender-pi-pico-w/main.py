@@ -81,7 +81,6 @@ random.seed(None)
 
 while True:
     print("loop")
-
     # build the command string starting with the prefix
     cmd_str = broadcast_prefix
     # generate a random number between 1 and 10
