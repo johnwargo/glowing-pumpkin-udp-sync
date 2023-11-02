@@ -39,6 +39,9 @@ UDP_PORT = config.udp_port
 wifi_ssid = config.wifi_ssid
 wifi_password = config.wifi_password
 
+last_color = -1
+max_color_idx = 5
+
 # =========================================================
 # Start here!
 # =========================================================
@@ -78,11 +81,27 @@ random.seed(None)
 
 while True:
     print("loop")
+
+    # build the command string starting with the prefix
+    cmd_str = broadcast_prefix
+    # generate a random number between 1 and 10
+    if random.randint(1, 10) > 8:
+        # flicker
+        cmd_str += "f"
+    else:
+        # change color
+        cmd_str += "c"
+        new_color = random.randint(0, max_color_idx)
+        while last_color == new_color:
+            new_color = random.randint(0, max_color_idx)
+        # at this point, we have a new color selected
+        last_color = new_color  # reset last color to the new color
+        cmd_str += ":"
+        cmd_str += last_color
     try:
-        msg = broadcast_prefix
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.sendto(msg, (UDP_IP, UDP_PORT))
+        sock.sendto(cmd_str, (UDP_IP, UDP_PORT))
         sock.close()
         print("message sent")
     except:
