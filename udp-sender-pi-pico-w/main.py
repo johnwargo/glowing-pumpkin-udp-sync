@@ -13,12 +13,22 @@ import time
 import random
 import network
 import socket
-
-# internal files
+# internal configuration settings
 import config
 
+# make a line of equal signs 40 long to display in the console
+# on startup
 bars = "=" * 40
 
+# ---------------------------------------------------------
+# Configuration settings pulled in from the config.py file
+# So you don't have to modify the source to change settings
+# ---------------------------------------------------------
+broadcast_prefix = config.broadcast_prefix
+host_name = config.host_name
+# min and max delay between color change (in seconds)
+delay_min = config.delay_min
+delay_max = config.delay_max
 # UDP settings
 UDP_IP = config.udp_ip
 UDP_PORT = config.udp_port
@@ -26,24 +36,18 @@ UDP_PORT = config.udp_port
 wifi_ssid = config.wifi_ssid
 wifi_password = config.wifi_password
 
-# min and max delay between color change (in milliseconds)
-delay_min = 5000
-delay_max = 10000
-
-broadcast_prefix = "pmpkn::"
-host_name = "pumpkin-send"
-
 # =========================================================
 # Start here!
 # =========================================================
 
 print(bars)
-print("UDP Sender Pi Pico")
+print("* UDP Sender Pi Pico")
 print(bars)
-
+print()
 print("UDP target IP: {}".format(UDP_IP))
 print("UDP target port: {}".format(UDP_PORT))
 print("Wi-FI SSID: {}".format(wifi_ssid))
+print()
 
 # TODO: Ensure that the UDP settings aren't empty
 # TODO: Ensure that the Wi-Fi network credentials aren't empty
@@ -51,7 +55,7 @@ print("Wi-FI SSID: {}".format(wifi_ssid))
 # connect to the wi-fi network
 print("Connecting to {}".format(wifi_ssid))
 wlan = network.WLAN(network.STA_IF)
-# wlan.config(hostname=host_name)
+wlan.config(hostname=host_name)
 wlan.active(True)
 wlan.connect(wifi_ssid, wifi_password)
 
@@ -71,7 +75,7 @@ else:
     status = wlan.ifconfig()
     print('Connected to ' + wifi_ssid + '. ' + 'Device IP: ' + status[0])
 
-random.seed(a=None, version=2)
+random.seed(None)
 
 while True:
     print("loop")

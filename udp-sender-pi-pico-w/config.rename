@@ -1,5 +1,8 @@
+broadcast_prefix = "pmpkn::"
+host_name = "pumpkin-send"
+delay_max = 10
+delay_min = 5
 udp_ip = ""
 udp_port = -1
-
 wifi_ssid = ""
 wifi_password = ""
