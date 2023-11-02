@@ -33,9 +33,6 @@ delay_max = 10000
 broadcast_prefix = "pmpkn::"
 host_name = "pumpkin-send"
 
-# TODO: Ensure that the UDP settings aren't empty
-# TODO: Ensure that the Wi-Fi network credentials aren't empty
-
 # =========================================================
 # Start here!
 # =========================================================
@@ -43,6 +40,13 @@ host_name = "pumpkin-send"
 print(bars)
 print("UDP Sender Pi Pico")
 print(bars)
+
+print("UDP target IP: {}".format(UDP_IP))
+print("UDP target port: {}".format(UDP_PORT))
+print("Wi-FI SSID: {}".format(wifi_ssid))
+
+# TODO: Ensure that the UDP settings aren't empty
+# TODO: Ensure that the Wi-Fi network credentials aren't empty
 
 # connect to the wi-fi network
 print("Connecting to {}".format(wifi_ssid))
@@ -59,15 +63,13 @@ while max_wait > 0:
     max_wait -= 1
     print('Waiting for Wi-Fi connection...')
     time.sleep(1)
-# Handle connection error
+
+# Handle connection errors
 if wlan.status() != 3:
     raise RuntimeError('Wi-Fi connection failed')
 else:
     status = wlan.ifconfig()
     print('Connected to ' + wifi_ssid + '. ' + 'Device IP: ' + status[0])
-
-print("UDP target IP   :", UDP_IP)
-print("UDP target port :", UDP_PORT)
 
 random.seed(a=None, version=2)
 
