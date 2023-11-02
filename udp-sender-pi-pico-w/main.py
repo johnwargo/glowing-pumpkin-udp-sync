@@ -17,9 +17,11 @@ import socket
 # internal files
 import config
 
+bars = "=" * 40
+
 # UDP settings
-UDP_IP = config.UDP_IP
-UDP_PORT = config.UDP_PORT
+UDP_IP = config.udp_ip
+UDP_PORT = config.udp_port
 # Wi-Fi settings
 wifi_ssid = config.wifi_ssid
 wifi_password = config.wifi_password
@@ -34,9 +36,18 @@ host_name = "pumpkin-send"
 # TODO: Ensure that the UDP settings aren't empty
 # TODO: Ensure that the Wi-Fi network credentials aren't empty
 
+# =========================================================
+# Start here!
+# =========================================================
+
+print(bars)
+print("UDP Sender Pi Pico")
+print(bars)
+
 # connect to the wi-fi network
+print("Connecting to {}".format(wifi_ssid))
 wlan = network.WLAN(network.STA_IF)
-wlan.config(hostname=host_name)
+# wlan.config(hostname=host_name)
 wlan.active(True)
 wlan.connect(wifi_ssid, wifi_password)
 

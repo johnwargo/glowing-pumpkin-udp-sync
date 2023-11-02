@@ -1,4 +1,5 @@
-UDP_IP = ""
-UDP_PORT = 5005
+udp_ip = ""
+udp_port = -1
+
 wifi_ssid = ""
 wifi_password = ""

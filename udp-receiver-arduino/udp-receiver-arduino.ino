@@ -34,7 +34,7 @@ CRGB leds[NUM_LEDS]; // LED Array (internal memory structure from FastLED)
 WiFiUDP udp;
 String request, searchStr;
 int color, colorPos, count;
-unsigned int localPort = 3333;       // local port to listen on
+unsigned int localPort = 65001;       // local port to listen on
 char packetBuffer[255];              // buffer to hold incoming packet
 char ReplyBuffer[] = "acknowledged"; // a string to send back
 
@@ -93,7 +93,9 @@ void setup()
   flashLEDs(CRGB::Green, 2);
 
   // start the UDP listener
-  Serial.println("Starting UDP listener");
+  Serial.print("Starting UDP listener (port: ");
+  Serial.print(localPort);
+  Serial.println(")");
   udp.begin(localPort);
 }
 
