@@ -27,9 +27,7 @@ const char* password = WIFI_PASSWORD;
 // https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFi/examples/WiFiUDPClient/WiFiUDPClient.ino
 // multicast
 const char* udpAddress = "192.168.86.255";
-// specific address
-// const char* udpAddress = "192.168.86.36";
-const uint16_t udpPort = 5005;
+const uint16_t udpPort = 65001;
 
 // LED Matrix stuff
 int numColors = 6;
