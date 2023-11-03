@@ -46,7 +46,8 @@ max_color_idx = 5
 # Start here!
 # =========================================================
 print(bars)
-print("* UDP Sender Pi Pico")
+print("# UDP Sender Pi Pico")
+print("# by John M. Wargo")
 print(bars)
 print()
 print("UDP target IP: {}".format(UDP_IP))
@@ -80,7 +81,6 @@ else:
 random.seed(None)
 
 while True:
-    print("loop")
     # build the command string starting with the prefix
     cmd_str = broadcast_prefix
     # generate a random number between 1 and 10
@@ -95,6 +95,7 @@ while True:
         last_color = new_color  # reset last color to the new color
         cmd_str += ":"
         cmd_str += str(last_color)
+    print()
     print("Command: {}".format(cmd_str))
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
