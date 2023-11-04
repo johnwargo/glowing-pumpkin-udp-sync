@@ -1,2 +1,3 @@
+#define BROADCAST_PREFIX "pmpkn::"
 #define WIFI_SSID ""
 #define WIFI_PASSWORD ""
