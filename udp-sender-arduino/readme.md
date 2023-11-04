@@ -1,4 +1,4 @@
-# Glowing Pumpkin USP Sync Sender
+# Glowing Pumpkin USP Sync Sender (Arduino)
 
 This is the [Glowing Pumpkin Xiao 5x5 BFF](https://github.com/johnwargo/glowing-pumpkin-xiao-bff) project with a UDP broadcast sender added to you can control the LEDs on other devices on the network running the [Receiver](https://github.com/johnwargo/glowing-pumpkin-udp-sync/tree/main/udp-receiver-arduino) version of the sketch. 
 
