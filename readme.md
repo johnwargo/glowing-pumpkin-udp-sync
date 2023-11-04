@@ -6,12 +6,12 @@ The way it works is you deploy one of the devices with the [sender](https://gith
 
 ![](images/connection.png)
 
-There are multiple folders in this repo:
+There are multiple folders in this repo; the following table describes the purpose of each:
 
 | Folder                 | Description | 
 | ---------------------- | ----------- |
-| `udp-receiver-arduino` |  |
-| `udp-sender-arduino`   | |
+| `udp-sender-arduino`   | Hosts the Arduino version of the Sender sketch. Configure and deploy this sketch on a single Glowing Pumpkin Xiao 5x5 BFF device. |
+| `udp-receiver-arduino` | Hosts the **Receiver** sketch. Configure and deploy this sketch on all of the remaining Glowing Pumpkin Xiao 5x5 BFF devices used for this project. |
 | `udp-sender-pi-pico-w` | | 
 
 
