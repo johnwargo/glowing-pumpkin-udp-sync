@@ -25,11 +25,11 @@
 const char* ssid = WIFI_SSID;
 const char* password = WIFI_PASSWORD;
 // if you change the UDP Broadcast Prefix in the receiver sketch
-// you must change the following value to match.
+// you must change BROADCAST_PREFIX value to match in the `constants.h` file
 // https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFi/examples/WiFiUDPClient/WiFiUDPClient.ino
 // multicast
-String broadcastPrefix = "pmpkn::";
-const char* udpAddress = "192.168.86.255";
+String broadcastPrefix = BROADCAST_PREFIX;
+const char* udpAddress = UDP_ADDRESS;
 const uint16_t udpPort = 65001;
 
 bool justFlickered = false;
@@ -43,7 +43,7 @@ WiFiUDP udp;
 void setup() {
   Serial.begin(115200);
   delay(1000);
-  Serial.println("\nGlowing Pumpkin UDP Sender");
+  Serial.println("\n\nGlowing Pumpkin UDP Sender");
   Serial.println("By John M. Wargo\n");
 
   // Initialize the FastLED library
@@ -52,6 +52,12 @@ void setup() {
   // Check to make sure we have Wi-Fi credentials before trying to use them
   if (String(ssid).isEmpty() || String(password).isEmpty()) {
     Serial.println("\nMissing Wi-Fi credentials");
+    setColor(CRGB::Red);
+    for (;;) {}
+  }
+
+if (String(udpAddress).isEmpty() ) {
+    Serial.println("\nMissing UDP Address");
     setColor(CRGB::Red);
     for (;;) {}
   }

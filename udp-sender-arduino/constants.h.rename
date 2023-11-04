@@ -1,2 +1,8 @@
+#define BROADCAST_PREFIX "pmpkn"
+// Set the address to the sender device IP address
+// with 255 as the last dot number
+// for example, if the device's IP address is 192.168.86.23
+// set the UDP_ADDRESS to 192.168.86.255
+#define UDP_ADDRESS ""
 #define WIFI_SSID ""
 #define WIFI_PASSWORD ""
