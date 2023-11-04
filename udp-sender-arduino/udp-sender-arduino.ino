@@ -119,9 +119,7 @@ void sendBroadcast(String msg) {
   unsigned int strLen;
   char charArray[cmdLen];
 
-  Serial.println("0");
   Serial.println(msg);
-  Serial.println("1");
   delay(500);
   strLen = msg.length();
   Serial.println("2");
