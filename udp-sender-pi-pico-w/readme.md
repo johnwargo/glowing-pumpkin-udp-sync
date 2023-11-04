@@ -32,6 +32,8 @@ The following table describes the configuration options:
 | `wifi_ssid`        | Enter your local Wi-Fi network name (SSID). |
 | `wifi_ssid`        | Enter your local Wi-Fi network password.|
 
+When you're done, the file should look something like this (with your information in it, of course):
+
 ```python
 broadcast_prefix = "pmpkn::"
 delay_max = 10
