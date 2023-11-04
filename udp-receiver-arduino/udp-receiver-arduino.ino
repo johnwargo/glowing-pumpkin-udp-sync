@@ -99,13 +99,15 @@ void loop() {
   int packetSize = udp.parsePacket();
   if (packetSize) {
     IPAddress remoteIp = udp.remoteIP();
-    Serial.print("Received packet of size ");
-    Serial.println(packetSize);
-    Serial.print("From ");
-    Serial.print(remoteIp);
-    Serial.print(", port ");
-    Serial.println(udp.remotePort());
+
+    // Serial.print("Received packet of size ");
+    // Serial.println(packetSize);
+    // Serial.print("From ");
+    // Serial.print(remoteIp);
+    // Serial.print(", port ");
+    // Serial.println(udp.remotePort());
     // read the packet into packetBufffer
+    
     int len = udp.read(packetBuffer, 255);
     if (len > 0) {
       packetBuffer[len] = 0;
@@ -127,10 +129,7 @@ void loop() {
     searchStr = broadcastPrefix + "c:";
     colorPos = searchStr.length();
     if (request.indexOf(searchStr) >= 0) {
-      color = request.charAt(colorPos) - '0';
-      Serial.print("Set Color #");
-      Serial.println(color);
-      fadeColor(colors[color]);
+      fadeColor(colors[request.charAt(colorPos) - '0']);
       return;  // skip the rest of this loop
     }
 
@@ -172,9 +171,11 @@ void flashLEDs(CRGB color, int count) {
 void flicker() {
   // how many times are we going to flash?
   int flashCount = (int)random(2, 6);
-  Serial.print("Flickering LEDs ");
-  Serial.print(flashCount);
-  Serial.println(" times");
+
+  // Serial.print("Flickering LEDs ");
+  // Serial.print(flashCount);
+  // Serial.println(" times");
+
   // flash the lights in white flashCount times
   // with a random duration and random delay between each flash
   for (int i = 0; i < flashCount; i++) {
