@@ -24,30 +24,23 @@ The following table describes the configuration options:
 | Setting            | Description |
 | ------------------ | ----------- |
 | `broadcast_prefix` | defines the string at the beginning of every command sent by the Sender. This receiver sketch will only process UDP broadcast messages that start with this prefix. You can generally leave this setting alone, but if you change it, be sure to make the exact same change in the Sender sketch configuration. |
-| `delay_max`        | |
-| `delay_min`        | |
-| `host_name`        | |
+| `delay_max`        | Between sending UDP commands, the program waits a random number of seconds between `delay_min` and `delay_max`. Adjust this value to change the maximum number of seconds. |
+| `delay_min`        | Between sending UDP commands, the program waits a random number of seconds between `delay_min` and `delay_max`. Adjust this value to change the minimum number of seconds. |
+| `host_name`        | The program sets this network name for the device when it connects to the Wi-Fi network. |
 | `udp_ip`           | set the address to the sender device IP address with 255 as the last dot number. For example, if the device's IP address is `192.168.86.23` then set the `UDP_ADDRESS` to `192.168.86.255`. |
-| `udp_port`         | |
+| `udp_port`         | The receiver uses a hard-coded UDP Port number of 65001 (I should probably change that and pull the value into the configuration file there too). If you change the port here, likely do to another application on the network using that port, make sure you make the same change in the Receiver sketch. |
 | `wifi_ssid`        | Enter your local Wi-Fi network name (SSID). |
 | `wifi_ssid`        | Enter your local Wi-Fi network password.|
-
-
-`broadcast_prefix` 
-
-For `UDP_ADDRESS`, 
-
- between the quotes in the `WIFI_SSID` define and the network password in the quotes in the `WIFI_PASSWORD` quotes. When you're done, it will look something like this (but with your network credentials):
 
 ```python
 broadcast_prefix = "pmpkn::"
 delay_max = 10
 delay_min = 5
 host_name = "pumpkin-send"
-udp_ip = ""
-udp_port = -1
-wifi_ssid = ""
-wifi_password = ""
+udp_ip = "192.168.86.255""
+udp_port = 6500
+wifi_ssid = "My Network"
+wifi_password = "mynetworkpassword"
 ```
 
 **Note:** The Broadcast Prefix and the Wi-Fi SSID and password are case sensitive; if your device doesn't connect correctly to the network, double check the credentials.
