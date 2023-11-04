@@ -6,7 +6,7 @@ To use it, configure the settings for the sketch as described in the following s
 
 ## Configuring Network Settings
 
-To keep my network settings out of the repo and to keep from forcing you to modify the source code to settings for the sketch, I coded the sketch so it reads settings from a separate file called `constants.h`. Included in the repository is a filed called `constants.h.rename`; rename that file to `constants.h`  (basically by removing the `.rename`) from the end of the file name. Inside the file you'll find the following code:
+To keep my network settings out of the repo and to keep from forcing you to modify the source code to change settings for the sketch, I coded the sketch so it reads settings from a separate file called `constants.h`. Included in the repository is a filed called `constants.h.rename`; rename that file to `constants.h`  (basically by removing the `.rename`) from the end of the file name. Inside the file you'll find the following code:
 
 ```c
 #define BROADCAST_PREFIX "pmpkn::"
