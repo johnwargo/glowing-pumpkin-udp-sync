@@ -106,20 +106,12 @@ void loop() {
     // Serial.print(remoteIp);
     // Serial.print(", port ");
     // Serial.println(udp.remotePort());
-    // read the packet into packetBufffer
-    
+
+    // read the packet into packetBufffer  
     int len = udp.read(packetBuffer, 255);
     if (len > 0) {
       packetBuffer[len] = 0;
     }
-
-    // // send a reply, to the IP address and port that sent us the packet we received
-    // udp.beginPacket(udp.remoteIP(), udp.remotePort());
-    // // https://forum.arduino.cc/t/solved-invalid-conversion-from-char-to-uint8_t/563582/2
-    // int i = 0;
-    // while (ReplyBuffer[i] != 0)
-    //   udp.write((uint8_t)ReplyBuffer[i++]);
-    // udp.endPacket();
 
     request = packetBuffer;
     Serial.print("Request: ");
@@ -171,10 +163,6 @@ void flashLEDs(CRGB color, int count) {
 void flicker() {
   // how many times are we going to flash?
   int flashCount = (int)random(2, 6);
-
-  // Serial.print("Flickering LEDs ");
-  // Serial.print(flashCount);
-  // Serial.println(" times");
 
   // flash the lights in white flashCount times
   // with a random duration and random delay between each flash
