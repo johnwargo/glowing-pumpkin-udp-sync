@@ -6,8 +6,13 @@ The way it works is you deploy one of the devices with the [sender](https://gith
 
 ![](images/connection.png)
 
+There are multiple folders in this repo:
 
-
+| Folder                 | Description | 
+| ---------------------- | ----------- |
+| `udp-receiver-arduino` |  |
+| `udp-sender-arduino`   | |
+| `udp-sender-pi-pico-w` | | 
 
 
 ***
