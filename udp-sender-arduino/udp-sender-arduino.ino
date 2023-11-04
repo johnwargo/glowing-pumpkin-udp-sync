@@ -16,6 +16,8 @@
 // local file (contains Wi-Fi credentials)
 #include "constants.h"
 
+#define MIN_DELAY 3000
+#define MAX_DELAY 10000
 #define NUM_LEDS 25
 #define PIN A3
 
@@ -30,7 +32,7 @@ String broadcastPrefix = "pmpkn::";
 const char* udpAddress = "192.168.86.255";
 const uint16_t udpPort = 65001;
 
-// LED Matrix stuff
+bool justFlickered = false;
 int numColors = 6;
 int lastColorIdx = -1;
 uint32_t colors[] = { CRGB::Blue, CRGB::Green, CRGB::Orange, CRGB::Purple, CRGB::Red, CRGB::Yellow };
@@ -98,11 +100,16 @@ void loop() {
   cmdStr = broadcastPrefix;
   //generate a random integer between 1 and 10
   if ((int)random(11) > 8) {
-    // if it's a 9 or a 10, do that flicker thing
-    cmdStr += "f";
-    sendBroadcast(cmdStr);
-    flicker();
+    if (!justFlickered) {
+      // if it's a 9 or a 10, do that flicker thing
+      justFlickered = true;
+      cmdStr += "f";
+      sendBroadcast(cmdStr);
+      flicker();
+      delay(1000);
+    }
   } else {
+    justFlickered = false;
     // Otherwise switch to the new color
     // pick a new color index
     colorIdx = random(1, numColors + 1);
@@ -119,6 +126,8 @@ void loop() {
     cmdStr += String(colorIdx);
     sendBroadcast(cmdStr);
     fadeColor(colors[colorIdx]);
+    // wait a while
+    delay((int)random(MIN_DELAY, MAX_DELAY));
   }
   delay(25);
 }
@@ -160,7 +169,6 @@ void fadeColor(CRGB c) {
     FastLED.show();
     delay(10);
   }
-  delay((int)random(250, 5000));
 }
 
 void flashLEDs(CRGB color, int count) {
