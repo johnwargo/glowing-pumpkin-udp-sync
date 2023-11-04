@@ -113,6 +113,33 @@ void loop() {
   delay(25);
 }
 
+void sendBroadcast(String msg) {
+  // command (cmd): pmpkn::c:#
+  int cmdLen = 11;  // a little longer than the command string (+1)
+  unsigned int strLen;
+  char charArray[cmdLen];
+
+  Serial.println("0");
+  Serial.println(msg);
+  Serial.println("1");
+  delay(500);
+  strLen = msg.length();
+  Serial.println("2");
+  // fill the char array with zeros (clear out any previous command detritus)
+  for (int i = 0; i < cmdLen; i++) charArray[i] = ' ';
+  Serial.println("3");
+  // copy the message (String) to the Character array
+  msg.toCharArray(charArray, strLen);
+  Serial.println("4");
+  udp.beginMulticastPacket();
+  Serial.println("5");
+  // udp.beginPacket(udpAddress, udpPort);
+  udp.printf(charArray);
+  Serial.println("6");
+  udp.endPacket();
+  Serial.println("7");
+}
+
 // Fill the NeoPixel array with a specific color
 void fadeColor(CRGB c) {
   for (int i = 0; i < 25; i++) {
@@ -162,29 +189,3 @@ void setColor(CRGB c) {
   FastLED.show();
 }
 
-void sendBroadcast(String msg) {
-  // command (cmd): pmpkn::c:#
-  int cmdLen = 11;  // a little longer than the command string (+1)
-  unsigned int strLen;
-  char charArray[cmdLen];
-
-  Serial.println("0");
-  Serial.println(msg);
-  Serial.println("1");
-  delay(500);
-  strLen = msg.length();
-  Serial.println("2");
-  // fill the char array with zeros (clear out any previous command detritus)
-  for (int i = 0; i < cmdLen; i++) charArray[i] = ' ';
-  Serial.println("3");
-  // copy the message (String) to the Character array
-  msg.toCharArray(charArray, strLen);
-  Serial.println("4");
-  udp.beginMulticastPacket();
-  Serial.println("5");
-  // udp.beginPacket(udpAddress, udpPort);
-  udp.printf(charArray);
-  Serial.println("6");
-  udp.endPacket();
-  Serial.println("7");
-}
