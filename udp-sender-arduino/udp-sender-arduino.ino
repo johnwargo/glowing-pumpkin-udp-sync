@@ -106,9 +106,14 @@ void loop() {
   cmdStr = broadcastPrefix;
   //generate a random integer between 1 and 10
   if ((int)random(11) > 8) {
+    // if it's a 9 or a 10, do that flicker thing
+    // but, did we just flicker?
     if (!justFlickered) {
-      // if it's a 9 or a 10, do that flicker thing
+      // whew, OK, it's good to flicker, just not twice in a row
       justFlickered = true;
+      // reset our last color idx since we flickered
+      lastColorIdx = -1;  
+      // build the command string
       cmdStr += "f";
       sendBroadcast(cmdStr);
       flicker();
