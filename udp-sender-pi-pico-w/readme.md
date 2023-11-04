@@ -1,6 +1,6 @@
 # Glowing Pumpkin USP Sync Sender (Raspberry Pi Pico W)
 
-This is the Raspberry Pi Pico W version of the [Sender](https://github.com/johnwargo/glowing-pumpkin-udp-sync/tree/main/udp-sender-arduino. I created this version when I couldn't get the Arduino Sender sketch working correctly; I was eventually able to get it working, but I kept this version in the repo just in case you want to play with a Python version of the Sender. It works on the Raspberry Pi Pico, but should run on the standard Raspberry Pi as well (although I did not test it).
+This is the Raspberry Pi Pico W version of the [Sender](https://github.com/johnwargo/glowing-pumpkin-udp-sync/tree/main/udp-sender-arduino). I created this version when I couldn't get the Arduino Sender sketch working correctly; I was eventually able to get it working, but I kept this version in the repo just in case you want to play with a Python version of the Sender. It works on the Raspberry Pi Pico, but should run on the standard Raspberry Pi as well (although I did not test it).
 
 To use it, configure the settings for the program as described in the following section then deploy it to a Raspberry Pi Pico W device (the W is important because that's the only Pico with Wi-Fi network support). When you run the program, all of the *Glowing Pumpkin Xiao 5x5 BFF* Receiver devices on the same network should start synchronizing the color display on the connected LED matrix.
 
