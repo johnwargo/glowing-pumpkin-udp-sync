@@ -32,6 +32,7 @@ const uint16_t udpPort = 65001;
 
 // LED Matrix stuff
 int numColors = 6;
+int lastColorIdx = -1;
 uint32_t colors[] = { CRGB::Blue, CRGB::Green, CRGB::Orange, CRGB::Purple, CRGB::Red, CRGB::Yellow };
 CRGB leds[NUM_LEDS];  // LED Array (internal memory structure from FastLED)
 
@@ -45,7 +46,7 @@ void setup() {
 
   // Initialize the FastLED library
   FastLED.addLeds<NEOPIXEL, PIN>(leds, NUM_LEDS);
-  
+
   // Check to make sure we have Wi-Fi credentials before trying to use them
   if (String(ssid).isEmpty() || String(password).isEmpty()) {
     Serial.println("\nMissing Wi-Fi credentials");
@@ -103,7 +104,17 @@ void loop() {
     flicker();
   } else {
     // Otherwise switch to the new color
+    // pick a new color index
     colorIdx = random(1, numColors + 1);
+    // if it's the same color as last time, keep looking until you get a new one
+    while (colorIdx == lastColorIdx) {
+      // pick another color index
+      colorIdx = random(1, numColors + 1);
+    }
+    // whew, we made it here, so we must have a new color index
+    // assign it to lastColorIdx to use the next time around
+    lastColorIdx = colorIdx;
+    // build the command string
     cmdStr += "c:";
     cmdStr += String(colorIdx);
     sendBroadcast(cmdStr);
