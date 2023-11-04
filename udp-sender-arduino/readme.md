@@ -6,29 +6,29 @@ To use it, configure the settings for the sketch as described in the following s
 
 ## Configuring Network Settings
 
-To keep my network settings out of the repo and to keep from forcing you to modify the source code to configure your local network settings, I coded the sketch so it reads the Wi-Fi settings from a separate file called `constants.h`. Included in the repository is a filed called `constants.h.rename`; rename that file to `constants.h`  (basically by removing the `.rename`) from the end of the file name. Inside the file you'll find the following code:
+To keep my network settings out of the repo and to keep from forcing you to modify the source code to settings for the sketch, I coded the sketch so it reads settings from a separate file called `constants.h`. Included in the repository is a filed called `constants.h.rename`; rename that file to `constants.h`  (basically by removing the `.rename`) from the end of the file name. Inside the file you'll find the following code:
 
 ```c
 #define BROADCAST_PREFIX "pmpkn::"
-// Set the address to the sender device IP address
-// with 255 as the last dot number
-// for example, if the device's IP address is 192.168.86.23
-// set the UDP_ADDRESS to 192.168.86.255
 #define UDP_ADDRESS ""
 #define WIFI_SSID ""
 #define WIFI_PASSWORD ""
-
 ```
 
+`BROADCAST_PREFIX` defines the string at the beginning of every command sent by the Sender. This receiver sketch will only process UDP broadcast messages that start with this prefix. You can generally leave this setting alone, but if you change it, be sure to make the exact same change in the Sender sketch configuration.
 
-Enter your local Wi-Fi network name (SSID) between the quotes in the `WIDI_SSID` define and the network password in the quotes in the `WIFI_PASSWORD` quotes. When you're done, it will look something like this (but with your network credentials):
+For `UDP_ADDRESS`, set the address to the sender device IP address with 255 as the last dot number. For example, if the device's IP address is `192.168.86.23` then set the `UDP_ADDRESS` to `192.168.86.255`.
+
+Enter your local Wi-Fi network name (SSID) between the quotes in the `WIFI_SSID` define and the network password in the quotes in the `WIFI_PASSWORD` quotes. When you're done, it will look something like this (but with your network credentials):
 
 ```c
+#define BROADCAST_PREFIX "pmpkn::"
+#define UDP_ADDRESS "192.168.86.255"
 #define WIFI_SSID "My Network"
 #define WIFI_PASSWORD "mynetworkpassword"
 ```
 
-**Note:** Wi-Fi SSID and passwords are case sensitive, so if your device doesn't connect correctly to the network, double check the credentials.
+**Note:** The Broadcast Prefix and the Wi-Fi SSID and password are case sensitive; if your device doesn't connect correctly to the network, double check the credentials.
 
 ## The Code
 

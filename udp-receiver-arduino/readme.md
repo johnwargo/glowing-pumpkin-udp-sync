@@ -4,23 +4,27 @@ This is the [Glowing Pumpkin Xiao 5x5 BFF](https://github.com/johnwargo/glowing-
 
 To use it, configure network settings for the sketch as described in the following section then compile and deploy the sketch on one or more *Glowing Pumpkin Xiao 5x5 BFF* devices. Once you configure and deploy the Sender sketch and power it on, all of the *Glowing Pumpkin Xiao 5x5 BFF* devices on the same network should start synchronizing the color display on the connected LED matrix.
 
-## Configuring Network Settings
+## Configuring Settings
 
-To keep my network settings out of the repo and to keep from forcing you to modify the source code to configure your local network settings, I coded the sketch so it reads the Wi-Fi settings from a separate file called `constants.h`. Included in the repository is a filed called `constants.h.rename`; rename that file to `constants.h`  (basically by removing the `.rename`) from the end of the file name. Inside the file you'll find the following code:
+To keep my network settings out of the repo and to keep from forcing you to modify the source code to configure your local  settings, I coded the sketch so it reads the settings from a separate file called `constants.h`. Included in the repository is a filed called `constants.h.rename`; rename that file to `constants.h` (basically by removing the `.rename`) from the end of the file name. Inside the file you'll find the following code:
 
 ```c
+#define BROADCAST_PREFIX "pmpkn::"
 #define WIFI_SSID ""
 #define WIFI_PASSWORD ""
 ```
 
-Enter your local Wi-Fi network name (SSID) between the quotes in the `WIDI_SSID` define and the network password in the quotes in the `WIFI_PASSWORD` quotes. When you're done, it will look something like this (but with your network credentials):
+`BROADCAST_PREFIX` defines the string at the beginning of every command sent by the Sender. This receiver sketch will only process UDP broadcast messages that start with this prefix. You can generally leave this setting alone, but if you change it, be sure to make the exact same change in the Sender sketch configuration.
+
+Enter your local Wi-Fi network name (SSID) between the quotes in the `WIFI_SSID` define and the network password in the quotes in the `WIFI_PASSWORD` quotes. When you're done, it will look something like this (but with your network credentials):
 
 ```c
+#define BROADCAST_PREFIX "pmpkn::"
 #define WIFI_SSID "My Network"
 #define WIFI_PASSWORD "mynetworkpassword"
 ```
 
-**Note:** Wi-Fi SSID and passwords are case sensitive, so if your device doesn't connect correctly to the network, double check the credentials.
+**Note:** The Wi-Fi SSID and password values are case sensitive; if your device doesn't connect correctly to the network, double check the credentials.
 
 ## The Code
 
