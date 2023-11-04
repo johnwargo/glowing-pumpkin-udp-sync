@@ -55,7 +55,7 @@ void setup() {
     for (;;) {
     }
   }
-ß
+
   // flash to let everyone know we're up
   flashLEDs(CRGB::Green, 2);  // Flash the lights twice to let everyone know we've initiated
   delay(500);
