@@ -26,6 +26,7 @@ const char* password = WIFI_PASSWORD;
 // you must change the following value to match.
 // https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFi/examples/WiFiUDPClient/WiFiUDPClient.ino
 // multicast
+String broadcastPrefix = "pmpkn::";
 const char* udpAddress = "192.168.86.255";
 const uint16_t udpPort = 65001;
 
@@ -35,18 +36,16 @@ uint32_t colors[] = { CRGB::Blue, CRGB::Green, CRGB::Orange, CRGB::Purple, CRGB:
 CRGB leds[NUM_LEDS];  // LED Array (internal memory structure from FastLED)
 
 WiFiUDP udp;
-String broadcastPrefix = "pmpkn::";
 
 void setup() {
   Serial.begin(115200);
   delay(1000);
-  Serial.println();
+  Serial.println("\nGlowing Pumpkin UDP Sender");
+  Serial.println("By John M. Wargo\n");
 
   // Initialize the FastLED library
   FastLED.addLeds<NEOPIXEL, PIN>(leds, NUM_LEDS);
-
-  Serial.println("\nGlowing Pumpkin UDP Sender");
-
+  
   // Check to make sure we have Wi-Fi credentials before trying to use them
   if (String(ssid).isEmpty() || String(password).isEmpty()) {
     Serial.println("\nMissing Wi-Fi credentials");
@@ -80,9 +79,9 @@ void setup() {
     }
   }
 
-  Serial.println("");
-  Serial.print("IP address: ");
+  Serial.print("\nIP address: ");
   Serial.println(WiFi.localIP());
+  Serial.println();
 
   // Flash LEDs green to let everyone know we successfully connected to Wi-Fi
   flashLEDs(CRGB::Green, 2);
@@ -115,28 +114,33 @@ void loop() {
 
 void sendBroadcast(String msg) {
   // command (cmd): pmpkn::c:#
-  int cmdLen = 11;  // a little longer than the command string (+1)
-  unsigned int strLen;
-  char charArray[cmdLen];
+  // a little longer than the command string (+1)
+  int cmdLen = 11;
 
+  char charArray[cmdLen];
+  // unsigned int strLen;
+
+  Serial.print("Outgoing command: ");
   Serial.println(msg);
-  delay(500);
-  strLen = msg.length();
-  Serial.println("2");
-  // fill the char array with zeros (clear out any previous command detritus)
-  for (int i = 0; i < cmdLen; i++) charArray[i] = ' ';
-  Serial.println("3");
+  // add spaces to the end of the command to make all commands
+  // `c:#` or `f` the same length
+  msg = padRight(msg, cmdLen - 1);
   // copy the message (String) to the Character array
-  msg.toCharArray(charArray, strLen);
-  Serial.println("4");
+  msg.toCharArray(charArray, cmdLen);
   udp.beginMulticastPacket();
-  Serial.println("5");
-  // udp.beginPacket(udpAddress, udpPort);
+  udp.beginPacket(udpAddress, udpPort);
   udp.printf(charArray);
-  Serial.println("6");
   udp.endPacket();
-  Serial.println("7");
 }
+
+String padRight(String str, int len) {
+  int delta = len - str.length();
+  if (delta > 0) {
+    for (int i = 0; i < delta; i++) str += " ";
+  }
+  return str;
+}
+
 
 // Fill the NeoPixel array with a specific color
 void fadeColor(CRGB c) {
@@ -186,4 +190,3 @@ void setColor(CRGB c) {
   fill_solid(leds, NUM_LEDS, c);
   FastLED.show();
 }
-

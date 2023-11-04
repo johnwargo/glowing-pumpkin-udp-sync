@@ -28,58 +28,54 @@ const char *password = WIFI_PASSWORD;
 const String broadcastPrefix = "pmpkn::";
 
 // LED Matrix stuff
-uint32_t colors[] = {CRGB::Blue, CRGB::Green, CRGB::Orange, CRGB::Purple, CRGB::Red, CRGB::Yellow};
-CRGB leds[NUM_LEDS]; // LED Array (internal memory structure from FastLED)
+uint32_t colors[] = { CRGB::Blue, CRGB::Green, CRGB::Orange, CRGB::Purple, CRGB::Red, CRGB::Yellow };
+CRGB leds[NUM_LEDS];  // LED Array (internal memory structure from FastLED)
 
 WiFiUDP udp;
 String request, searchStr;
 int color, colorPos, count;
 unsigned int localPort = 65001;       // local port to listen on
-char packetBuffer[255];              // buffer to hold incoming packet
-char ReplyBuffer[] = "acknowledged"; // a string to send back
+char packetBuffer[255];               // buffer to hold incoming packet
+char ReplyBuffer[] = "acknowledged";  // a string to send back
 
-void setup()
-{
+void setup() {
   Serial.begin(115200);
   delay(1000);
-  Serial.println();
+  Serial.println("\nGlowing Pumpkin UDP Receiver");
+  Serial.println("By John M. Wargo\n");
 
   // Initialize the FastLED library
   FastLED.addLeds<NEOPIXEL, PIN>(leds, NUM_LEDS);
 
   // Check to make sure we have Wi-Fi credentials
   // before trying to use them
-  if (String(ssid).isEmpty() || String(password).isEmpty())
-  {
+  if (String(ssid).isEmpty() || String(password).isEmpty()) {
     Serial.println("Missing Wi-Fi credentials");
     setColor(CRGB::Red);
-    for (;;)
-    {
+    for (;;) {
     }
   }
 
   Serial.println("\nGlowing Pumpkin UDP Receiver");
   // flash to let everyone know we're up
-  flashLEDs(CRGB::Green, 2); // Flash the lights twice to let everyone know we've initiated
+  flashLEDs(CRGB::Green, 2);  // Flash the lights twice to let everyone know we've initiated
   delay(500);
 
   // connect to the Wi-Fi network
   Serial.print("Connecting to ");
   Serial.println(ssid);
-  setColor(CRGB::Blue); // turn all LEDs blue while we connect to the Wi-Fi network
+  setColor(CRGB::Blue);  // turn all LEDs blue while we connect to the Wi-Fi network
 
   // tracks how many times we've looped to connect to Wi-Fi
   // helps the sketch format the output a little cleaner
   int counter = 0;
 
   WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED)
-  {
+  while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
     counter += 1;
-    if (counter > 25)
-    {
+    if (counter > 25) {
       counter = 0;
       Serial.println();
     }
@@ -99,12 +95,10 @@ void setup()
   udp.begin(localPort);
 }
 
-void loop()
-{
+void loop() {
   // if there's UDP data available, read a packet
   int packetSize = udp.parsePacket();
-  if (packetSize)
-  {
+  if (packetSize) {
     IPAddress remoteIp = udp.remoteIP();
     Serial.print("Received packet of size ");
     Serial.println(packetSize);
@@ -114,8 +108,7 @@ void loop()
     Serial.println(udp.remotePort());
     // read the packet into packetBufffer
     int len = udp.read(packetBuffer, 255);
-    if (len > 0)
-    {
+    if (len > 0) {
       packetBuffer[len] = 0;
     }
 
@@ -134,19 +127,17 @@ void loop()
     // Color
     searchStr = broadcastPrefix + "c:";
     colorPos = searchStr.length();
-    if (request.indexOf(searchStr) >= 0)
-    {
+    if (request.indexOf(searchStr) >= 0) {
       color = request.charAt(colorPos) - '0';
       Serial.print("Set Color #");
       Serial.println(color);
       fadeColor(colors[color]);
-      return; // skip the rest of this loop
+      return;  // skip the rest of this loop
     }
 
     // Flicker
     searchStr = broadcastPrefix + "f";
-    if (request.indexOf(searchStr) >= 0)
-    {
+    if (request.indexOf(searchStr) >= 0) {
       flicker();
     }
   }
@@ -154,11 +145,9 @@ void loop()
 }
 
 // Fill the NeoPixel array with a specific color
-void fadeColor(CRGB c)
-{
+void fadeColor(CRGB c) {
   // Serial.println("Changing color");
-  for (int i = 0; i < 25; i++)
-  {
+  for (int i = 0; i < 25; i++) {
     leds[i] = c;
     FastLED.show();
     delay(10);
@@ -166,13 +155,11 @@ void fadeColor(CRGB c)
   delay((int)random(250, 2000));
 }
 
-void flashLEDs(CRGB color, int count)
-{
+void flashLEDs(CRGB color, int count) {
   int duration = 500;
   int offDuration = duration / 2;
 
-  for (int i = 0; i < count; i++)
-  {
+  for (int i = 0; i < count; i++) {
     fill_solid(leds, NUM_LEDS, color);
     FastLED.show();
     delay(duration);
@@ -183,8 +170,7 @@ void flashLEDs(CRGB color, int count)
   delay(500);
 }
 
-void flicker()
-{
+void flicker() {
   // how many times are we going to flash?
   int flashCount = (int)random(2, 6);
   Serial.print("Flickering LEDs ");
@@ -192,8 +178,7 @@ void flicker()
   Serial.println(" times");
   // flash the lights in white flashCount times
   // with a random duration and random delay between each flash
-  for (int i = 0; i < flashCount; i++)
-  {
+  for (int i = 0; i < flashCount; i++) {
     // Set all pixels to white and turn them on
     fill_solid(leds, NUM_LEDS, CRGB::White);
     FastLED.show();
@@ -207,8 +192,7 @@ void flicker()
   }
 }
 
-void setColor(CRGB c)
-{
+void setColor(CRGB c) {
   fill_solid(leds, NUM_LEDS, c);
   FastLED.show();
 }
