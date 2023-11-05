@@ -6,7 +6,7 @@ Here is a video of the [project in action](https://www.youtube.com/watch?v=L2v5T
 
 The way it works is you deploy one of the devices with the [sender](https://github.com/johnwargo/glowing-pumpkin-udp-sync/tree/main/udp-sender-arduino) sketch and all of the remaining devices with the [receiver](https://github.com/johnwargo/glowing-pumpkin-udp-sync/tree/main/udp-receiver-arduino) sketch. As long as all of the devices are on the same Wi-Fi network segment, the sender sends an UDP broadcast message on the network notifying all of the other devices to switch to the same color. The sender sketch periodically a flicker broadcast and all devices flicker with white light like lightning or sparks. 
 
-![](images/connection.png)
+![](images/udp-sync-diagram.png)
 
 There are several folders in this repo; the following table describes the purpose of each:
 
