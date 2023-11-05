@@ -40,7 +40,7 @@ delay_max = 10
 delay_min = 5
 host_name = "pumpkin-send"
 udp_ip = "192.168.86.255""
-udp_port = 6500
+udp_port = 65001
 wifi_ssid = "My Network"
 wifi_password = "mynetworkpassword"
 ```
