@@ -1,3 +1,4 @@
 #define BROADCAST_PREFIX "pmpkn::"
+#define UDP_PORT 65001
 #define WIFI_SSID ""
 #define WIFI_PASSWORD ""

@@ -1,4 +1,6 @@
 #define BROADCAST_PREFIX "pmpkn::"
+#define DELAY_MIN 3000
+#define DELAY_MAX 10000
 // Set the address to the sender device IP address
 // with 255 as the last dot number
 // for example, if the device's IP address is 192.168.86.23

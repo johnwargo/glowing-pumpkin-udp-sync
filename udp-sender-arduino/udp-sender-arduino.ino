@@ -16,8 +16,6 @@
 // local file (contains Wi-Fi credentials)
 #include "constants.h"
 
-#define MIN_DELAY 3000
-#define MAX_DELAY 10000
 #define NUM_LEDS 25
 #define PIN A3
 
@@ -30,7 +28,7 @@ const char* password = WIFI_PASSWORD;
 // multicast
 String broadcastPrefix = BROADCAST_PREFIX;
 const char* udpAddress = UDP_ADDRESS;
-const uint16_t udpPort = 65001;
+const uint16_t udpPort = UDP_PORT;
 
 bool justFlickered = false;
 int numColors = 6;
@@ -138,7 +136,7 @@ void loop() {
     sendBroadcast(cmdStr);
     fadeColor(colors[colorIdx]);
     // wait a while
-    delay((int)random(MIN_DELAY, MAX_DELAY));
+    delay((int)random(DELAY_MIN, DELAY_MAX));
   }
   delay(25);
 }

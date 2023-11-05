@@ -34,7 +34,7 @@ CRGB leds[NUM_LEDS];  // LED Array (internal memory structure from FastLED)
 WiFiUDP udp;
 String request, searchStr;
 int color, colorPos, count;
-unsigned int localPort = 65001;       // local port to listen on
+unsigned int localPort = UDP_PORT;    // local port to listen on
 char packetBuffer[255];               // buffer to hold incoming packet
 char ReplyBuffer[] = "acknowledged";  // a string to send back
 

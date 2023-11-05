@@ -10,16 +10,25 @@ To keep my network settings out of the repo and to keep from forcing you to modi
 
 ```c
 #define BROADCAST_PREFIX "pmpkn::"
+#define UDP_PORT 65001
 #define WIFI_SSID ""
 #define WIFI_PASSWORD ""
 ```
 
-`BROADCAST_PREFIX` defines the string at the beginning of every command sent by the Sender. This receiver sketch will only process UDP broadcast messages that start with this prefix. You can generally leave this setting alone, but if you change it, be sure to make the exact same change in the Sender sketch configuration.
+The following table describes the configuration options:
 
-Enter your local Wi-Fi network name (SSID) between the quotes in the `WIFI_SSID` define and the network password in the quotes in the `WIFI_PASSWORD` quotes. When you're done, it will look something like this (but with your network credentials):
+| Setting            | Description |
+| ------------------ | ----------- |
+| `BROADCAST_PREFIX` | Defines the string at the beginning of every command sent by the Sender. This receiver sketch will only process UDP broadcast messages that start with this prefix. If you change it on the Sender, you must make the exact same change hers. |
+| `UDP_PORT`         | The UDP Port the sketch sends broadcast messages on. If you changed it in the Sender, you must make the same change here as well. |
+| `WIFI_SSID`        | Enter your local Wi-Fi network name (SSID). |
+| `WIFI_PASSWORD`    | Enter your local Wi-Fi network password. |
+
+When you're done, the file should look something like this (with your information in it, of course):
 
 ```c
 #define BROADCAST_PREFIX "pmpkn::"
+#define UDP_PORT 65001
 #define WIFI_SSID "My Network"
 #define WIFI_PASSWORD "mynetworkpassword"
 ```

@@ -23,14 +23,14 @@ The following table describes the configuration options:
 
 | Setting            | Description |
 | ------------------ | ----------- |
-| `broadcast_prefix` | Defines the string at the beginning of every command sent by the Sender. This receiver sketch will only process UDP broadcast messages that start with this prefix. You can generally leave this setting alone, but if you change it, be sure to make the exact same change in the Sender sketch configuration. |
+| `broadcast_prefix` | Defines the string at the beginning of every command sent by the Sender. This receiver sketch only processs UDP broadcast messages that start with this prefix. You can generally leave this setting alone, but if you change it, be sure to make the exact same change in the Sender sketch configuration. |
 | `delay_max`        | Between sending UDP commands, the program waits a random number of seconds between `delay_min` and `delay_max` before sending the next command. Adjust this value to change the maximum number of seconds. |
 | `delay_min`        | Between sending UDP commands, the program waits a random number of seconds between `delay_min` and `delay_max` before sending the next command. Adjust this value to change the minimum number of seconds. |
 | `host_name`        | The program sets this network name for the device when it connects to the Wi-Fi network. |
-| `udp_ip`           | Set the address to the sender device IP address with 255 as the last dot number. For example, if the device's IP address is `192.168.86.23` then set the `UDP_ADDRESS` to `192.168.86.255`. |
+| `udp_ip`           | Set the address to the sender device IP address with 255 as the last dot number. For example, if the device's IP address is `192.168.86.23` then set the `udp_ip` to `192.168.86.255`. |
 | `udp_port`         | The receiver uses a hard-coded UDP Port number of 65001 (I should probably change that and pull the value into the configuration file there too). If you change the port here, likely do to another application on the network using that port, make sure you make the same change in the Receiver sketch. |
 | `wifi_ssid`        | Enter your local Wi-Fi network name (SSID). |
-| `wifi_ssid`        | Enter your local Wi-Fi network password.|
+| `wifi_ssid`        | Enter your local Wi-Fi network password. |
 
 When you're done, the file should look something like this (with your information in it, of course):
 
