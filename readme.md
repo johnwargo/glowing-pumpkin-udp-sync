@@ -1,4 +1,4 @@
-# Glowing Pumpkin Sync UDP
+# Glowing Pumpkin Sync (UDP)
 
 This is a version of the [Glowing Pumpkin Xiao 5x5 BFF](https://github.com/johnwargo/glowing-pumpkin-xiao-bff) project that allows multiple devices to synchronize LED Matrix colors so all devices display the same color. I built this project because I wanted to place one of the *Glowing Pumpkin Xiao 5x5 BFF* devices in each of the front dormers in my house and synchronize the display across all of them. 
 
